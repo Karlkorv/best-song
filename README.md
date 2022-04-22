@@ -1,1 +1,5 @@
-# best-song
+# Spotify Song Tournament
+## Resources / To Learn
+<a href="https://developer.spotify.com/documentation/general/guides/authorization/code-flow/">Spotify Auth code-flow</a>
+<a href="https://dotnet.microsoft.com/en-us/learn/aspnet/blazor-tutorial/intro">Blazor Intro Tutorial</a>
+<a href="https://johnnycrazy.github.io/SpotifyAPI-NET/docs/introduction">Spotify API-NET docs</a>
