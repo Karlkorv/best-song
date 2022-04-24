@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="bunit" Version="1.6.4" />
+    <PackageReference Include="bunit.web" Version="1.6.4" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly" Version="6.0.2" />
     <PackageReference Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="6.0.2" PrivateAssets="all" />
     <PackageReference Include="SpotifyAPI.Web" Version="6.2.2" />
