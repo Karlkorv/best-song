@@ -10,6 +10,7 @@
 *.userosscache
 *.sln.docstates
 *.vscode
+*.idea
 omnisharp.json
 *.DS_Store
 *.editorconfig

@@ -1,41 +1,43 @@
+#nullable enable
 using System;
 using System.Collections.Generic;
 using System.Linq;
-namespace best_song
+
+namespace best_song.Shared
 {
     public class Tournament<T>
     {
         internal class Node
         {
-            internal Node? left;
-            internal Node? right;
-            internal T value;
+            internal readonly Node? Left;
+            internal readonly Node? Right;
+            internal T Value;
 
             // Constructors, one bottom-level and one top-level
             internal Node(T leftValue, T rightValue)
             {
-                left = new(leftValue);
-                right = new(rightValue);
-                value = default;
+                Left = new(leftValue);
+                Right = new(rightValue);
+                Value = default;
             }
 
             internal Node(T value)
             {
-                left = null;
-                right = null;
-                this.value = value;
+                Left = null;
+                Right = null;
+                this.Value = value;
             }
 
             internal Node(Node? left, Node? right)
             {
-                this.left = left;
-                this.right = right;
-                value = default;
+                this.Left = left;
+                this.Right = right;
+                Value = default;
             }
 
             internal T[] ToArray()
             {
-                return new T[] { left.value, right.value };
+                return new T[] { Left.Value, Right.Value };
             }
         }
 
@@ -57,7 +59,7 @@ namespace best_song
         public bool win(T value)
         {
             var currentNode = topLevelNodes[currentNodeIndex];
-            if (!currentNode.left.value.Equals(value) && !currentNode.right.value.Equals(value))
+            if (!currentNode.Left.Value.Equals(value) && !currentNode.Right.Value.Equals(value))
             {
                 throw new ArgumentException("Value could not be found in current matchup");
             }
@@ -66,15 +68,15 @@ namespace best_song
             {
                 if(TopLevelSize == 1) // Final matchup of tournament
                 {
-                    topLevelNodes[0].value = value;
+                    topLevelNodes[0].Value = value;
                     return true;
                 }
 
-                currentNode.value = value;
+                currentNode.Value = value;
                 organizeNewTopLevel();
                 return false;
             }
-            currentNode.value = value;
+            currentNode.Value = value;
             currentNodeIndex++;
             return false;
         }

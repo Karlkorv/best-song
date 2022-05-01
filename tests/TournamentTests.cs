@@ -15,6 +15,6 @@ public class TournamentTests
     [Fact]
     public void evenEntryIsFinishedAfter3Rounds()
     {
-
+        
     }
 }
