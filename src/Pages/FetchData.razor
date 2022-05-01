@@ -1,11 +1,16 @@
 ﻿@page "/fetchdata"
+@inject HttpClient Http
 
+<<<<<<< HEAD
 @using best_song.Data
 @inject WeatherForecastService ForecastService
+=======
+<PageTitle>Weather forecast</PageTitle>
+>>>>>>> parent of da84728 (Change from blazorwasm to blazorserver)
 
 <h1>Weather forecast</h1>
 
-<p>This component demonstrates fetching data from a service.</p>
+<p>This component demonstrates fetching data from the server.</p>
 
 @if (forecasts == null)
 {
@@ -41,6 +46,17 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+        forecasts = await Http.GetFromJsonAsync<WeatherForecast[]>("sample-data/weather.json");
+    }
+
+    public class WeatherForecast
+    {
+        public DateTime Date { get; set; }
+
+        public int TemperatureC { get; set; }
+
+        public string? Summary { get; set; }
+
+        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
     }
 }
