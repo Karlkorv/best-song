@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 <Project Sdk="Microsoft.NET.Sdk.BlazorWebAssembly">
 
   <PropertyGroup>
@@ -22,4 +23,15 @@
   <ItemGroup>
     <None Remove="Newtonsoft.Json" />
   </ItemGroup>
+=======
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>best_song</RootNamespace>
+  </PropertyGroup>
+
+>>>>>>> parent of afefb6a (Change to net5.0)
 </Project>

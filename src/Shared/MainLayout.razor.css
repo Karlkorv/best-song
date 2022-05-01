@@ -4,7 +4,11 @@
     flex-direction: column;
 }
 
+<<<<<<< HEAD
 .main {
+=======
+main {
+>>>>>>> parent of afefb6a (Change to net5.0)
     flex: 1;
 }
 
@@ -21,6 +25,7 @@
     align-items: center;
 }
 
+<<<<<<< HEAD
     .top-row ::deep a, .top-row ::deep .btn-link {
         white-space: nowrap;
         margin-left: 1.5rem;
@@ -32,6 +37,14 @@
     }
 
     .top-row ::deep a:first-child {
+=======
+    .top-row ::deep a, .top-row .btn-link {
+        white-space: nowrap;
+        margin-left: 1.5rem;
+    }
+
+    .top-row a:first-child {
+>>>>>>> parent of afefb6a (Change to net5.0)
         overflow: hidden;
         text-overflow: ellipsis;
     }
@@ -45,7 +58,11 @@
         justify-content: space-between;
     }
 
+<<<<<<< HEAD
     .top-row ::deep a, .top-row ::deep .btn-link {
+=======
+    .top-row a, .top-row .btn-link {
+>>>>>>> parent of afefb6a (Change to net5.0)
         margin-left: 0;
     }
 }
@@ -69,6 +86,7 @@
     }
 
 <<<<<<< HEAD
+<<<<<<< HEAD
     .main > div {
 =======
     .top-row.auth ::deep a:first-child {
@@ -79,6 +97,9 @@
 
     .top-row, article {
 >>>>>>> parent of da84728 (Change from blazorwasm to blazorserver)
+=======
+    .top-row, article {
+>>>>>>> parent of afefb6a (Change to net5.0)
         padding-left: 2rem !important;
         padding-right: 1.5rem !important;
     }

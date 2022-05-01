@@ -1,4 +1,5 @@
 ﻿@page "/fetchdata"
+<<<<<<< HEAD
 @inject HttpClient Http
 
 <<<<<<< HEAD
@@ -11,6 +12,17 @@
 <h1>Weather forecast</h1>
 
 <p>This component demonstrates fetching data from the server.</p>
+=======
+
+<PageTitle>Weather forecast</PageTitle>
+
+@using best_song.Data
+@inject WeatherForecastService ForecastService
+
+<h1>Weather forecast</h1>
+
+<p>This component demonstrates fetching data from a service.</p>
+>>>>>>> parent of afefb6a (Change to net5.0)
 
 @if (forecasts == null)
 {
@@ -42,6 +54,7 @@ else
 }
 
 @code {
+<<<<<<< HEAD
     private WeatherForecast[] forecasts;
 
     protected override async Task OnInitializedAsync()
@@ -58,5 +71,12 @@ else
         public string? Summary { get; set; }
 
         public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+=======
+    private WeatherForecast[]? forecasts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        forecasts = await ForecastService.GetForecastAsync(DateTime.Now);
+>>>>>>> parent of afefb6a (Change to net5.0)
     }
 }
