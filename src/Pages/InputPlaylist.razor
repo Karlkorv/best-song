@@ -1,20 +1,6 @@
 @page "/InputPlaylist"
-@inject IJSRuntime JsRuntime
-<PageTitle>Input playlist</PageTitle>
-<h1>Input playlist as ID or link</h1>
-<input type="text" id="linkInput" Input name="linkInput" @bind-value="Input" onsubmit="@ValidateForm"/>
-<input type="submit" value="Submit"/>
-<output>@Input</output>
-@code {
-       public string Input { get; set; }
+<h3>InputPlaylist</h3>
 
-       public bool ValidateForm() // TODO Handle input to confirm valid link/ID 
-       {
-              if (Input.Length == 1)
-              {
-                  JsRuntime.InvokeVoidAsync("alert", "red alert!");
-                  return false;
-              }
-           return true;
-       }
+@code {
+    
 }
