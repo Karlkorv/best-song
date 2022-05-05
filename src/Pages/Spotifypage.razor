@@ -1,0 +1,42 @@
+@page "/spotify"
+@inject IConfiguration _config
+@using best_song.Data
+@using SpotifyAPI.Web
+@inject Spotify spotify
+
+
+<PageTitle>Spotify</PageTitle>
+
+<input @bind="link">
+<button @onclick="getTracks">Get tracks</button>
+
+<p>@items </p>
+
+@code {
+    private string? link;
+    private MarkupString items;
+    System.Collections.Generic.List<FullTrack>? tracks;
+
+    private async void getTracks() 
+    {
+        try
+        {
+            tracks = await spotify.GetPlayList(link);  
+        }
+        catch (APIException e)
+        {
+            items = (MarkupString)e.Message;
+            return;
+        }
+        var sb = new System.Text.StringBuilder();
+        foreach (var item in tracks)
+        {
+            sb.Append(item.Name);
+            sb.Append("<audio controls> <source src=");
+            sb.Append(item.PreviewUrl);
+            sb.Append("\" type=\"audio/mpeg\"> </audio>");
+            sb.Append("<br>");
+        }
+        items = (MarkupString)sb.ToString();
+    }
+}

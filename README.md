@@ -5,3 +5,5 @@
 <a href="https://dotnet.microsoft.com/en-us/learn/aspnet/blazor-tutorial/intro">Blazor Intro Tutorial</a>
 
 <a href="https://johnnycrazy.github.io/SpotifyAPI-NET/docs/introduction">Spotify API-NET docs</a>
+
+<a href="https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows">Secrets</a>
