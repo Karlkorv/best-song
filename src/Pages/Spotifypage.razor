@@ -7,19 +7,27 @@
 
 <PageTitle>Spotify</PageTitle>
 
-<input @bind="playlistId">
+<input @bind="link">
 <button @onclick="getTracks">Get tracks</button>
 
 <p>@items </p>
 
 @code {
-    private string? playlistId;
+    private string? link;
     private MarkupString items;
     System.Collections.Generic.List<FullTrack>? tracks;
 
     private async void getTracks() 
     {
-        tracks = await spotify.GetPlayListTracks(playlistId);  
+        try
+        {
+            tracks = await spotify.GetPlayList(link);  
+        }
+        catch (APIException e)
+        {
+            items = (MarkupString)e.Message;
+            return;
+        }
         var sb = new System.Text.StringBuilder();
         foreach (var item in tracks)
         {
