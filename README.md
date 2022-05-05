@@ -10,4 +10,4 @@ Spotify color palette (hex):
 #1db954 Dark green
 #1ed760 Light green
 #ffffff Pure white
-#191414 white
+#191414 black
