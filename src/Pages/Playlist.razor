@@ -1,32 +1,33 @@
 ﻿@page "/"
 @using best_song.Data
-@using SpotifyAPI.Web
-@using SpotifyAPI.Web.Auth
+@using System.ComponentModel.DataAnnotations
 @inject IConfiguration _config
 @inject Spotify spotify
-<h3>InputPlaylist</h3>
-
-<form>
-    <input type="url" id="playlistInput" @bind-value="_input" onsubmit="@OnSubmit()"/>
-    <label for="playlistInput">Enter share playlist url</label>
+<h3>Input Playlist</h3>
+<EditForm Model="@_inputModel" OnValidSubmit="@HandleValidSubmit">
+    <p>
+        <label>
+            Share playlist url:
+            <InputText @bind-Value="_inputModel.Input"/>
+        </label>
+    </p>
     <button type="submit">Submit</button>
-</form>
+</EditForm>
 
 @code {
-    private string _input = "";
 
-    private async Task<bool> OnSubmit()
+    public class InputModel
     {
-        Console.WriteLine("Playlist submitted, checking...");
-        try
-        {
-            var playList = await spotify.GetPlayList(_input);
-        }
-        catch (APIException e)
-        {
-            Console.WriteLine("Exception caught" + e);
-            return false;
-        }
-        return true;
+        [Required]
+        [Url]
+        public string? Input { get; set; }
     }
+
+    private readonly InputModel _inputModel = new();
+
+    public void HandleValidSubmit()
+    {
+        
+    }
+
 }
