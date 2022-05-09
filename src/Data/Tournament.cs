@@ -1,5 +1,5 @@
 #nullable enable
-namespace best_song.Shared;
+namespace best_song.Data;
 
 /// <summary>
 ///     Tournament struct
