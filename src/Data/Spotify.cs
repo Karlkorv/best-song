@@ -3,6 +3,8 @@ using SpotifyAPI.Web.Auth;
 using System.Collections;
 using System.Text.RegularExpressions;
 using System;
+using System.Text;
+using HtmlAgilityPack;
 namespace best_song.Data;
 public class Spotify {
 
@@ -49,10 +51,60 @@ public class Spotify {
         List<FullTrack> tracks = new List<FullTrack>();
         foreach (PlaylistTrack<IPlayableItem> item in playlist.Tracks.Items)
         {
-            if (item.Track is FullTrack track) {
+            if (item.Track is FullTrack track) 
+            {
+                if (track.PreviewUrl == null)
+               {
+                   track.PreviewUrl = GetPreviewFromId(track.Id);
+               }
                 tracks.Add(track);
             }
         }
         return tracks;
+    }
+    /// <summary>
+    /// Ful kod? Ja
+    /// Funkar? Ja
+    /// </summary>
+    /// <param name="id"></param>
+    /// <returns></returns>
+    private string GetPreviewFromId(string id) 
+    {
+        StringBuilder embedUrl = new StringBuilder("https://open.spotify.com/embed?uri=spotify:track:");
+        embedUrl.Append(id);
+        var body = GetDocument(embedUrl.ToString())
+                .DocumentNode.SelectSingleNode("//body/script[@id='resource']")
+                .InnerHtml;
+
+        Regex rg = new Regex(@"(?<=mp3-preview%2F)(.*?)(?=%22)");
+        StringBuilder link = new StringBuilder("https://p.scdn.co/mp3-preview/");
+        var linkExt = rg.Matches(body)[0].Value;
+        for (int i = 0; i < linkExt.Length; i++)
+        {
+            if (linkExt[i] == '%')
+            {
+                StringBuilder hex = new StringBuilder();
+                hex.Append(linkExt[i+1]).Append(linkExt[i+2]);
+                string value = Char.ConvertFromUtf32(Convert.ToInt32(hex.ToString(), 16));
+                link.Append(value);
+                i=i+2;
+            }
+            link.Append(linkExt[i]);
+        }
+        return link.ToString();
+    }
+    private static HtmlDocument GetDocument(string url)
+    {
+        HtmlWeb web = new HtmlWeb();
+        HtmlDocument doc = web.Load(url);
+        return doc;
+    }
+
+    public async Task<string> GetTrack(string id) 
+    {
+
+        var track = await _spotifyClient.Tracks.Get(id);
+        Console.WriteLine(track.PreviewUrl);
+        return track.PreviewUrl;
     }
 }
