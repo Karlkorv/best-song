@@ -1,7 +1,9 @@
 ﻿@page "/"
 @using best_song.Data
 @using System.ComponentModel.DataAnnotations
+@using SpotifyAPI.Web
 @inject IConfiguration _config
+@inject Tournament<FullTrack> trn;
 @inject Spotify spotify
 <h3>Input Playlist</h3>
 <EditForm Model="@_inputModel" OnValidSubmit="@HandleValidSubmit">
@@ -20,14 +22,24 @@
     {
         [Required]
         [Url]
-        public string? Input { get; set; }
+        public string Input { get; set; } = "";
     }
 
     private readonly InputModel _inputModel = new();
 
-    public void HandleValidSubmit()
+    private async void HandleValidSubmit()
     {
-        
+        try
+        {
+            var entryList = await spotify.GetPlayList(_inputModel.Input);
+            trn = new Tournament<FullTrack>(entryList);
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            return; // TODO: Handle submit errors
+        }
+        // TODO: Dynamically change site to tournament.
     }
 
 }
