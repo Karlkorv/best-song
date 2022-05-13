@@ -1,4 +1,6 @@
 #nullable enable
+using System.Diagnostics;
+
 namespace best_song.Data;
 
 /// <summary>
@@ -22,7 +24,7 @@ public class Tournament<T>
     {
         if (entries.Count < 2)
             throw new ArgumentException($"Entry amount is to small, current amount: {entries.Count}");
-        OrganizeNewTopLevel(entries);
+        _topLevelNodes = OrganizeNewTopLevel(entries);
     }
 
     /// <summary>
@@ -50,7 +52,7 @@ public class Tournament<T>
             {
                 if (_currentNodeIndex == TopLevelSize - 1)
                 {
-                    OrganizeNewTopLevel();
+                    _topLevelNodes = OrganizeNewTopLevel();
                     return CurrentMatchUp;
                 }
 
@@ -76,7 +78,7 @@ public class Tournament<T>
             case 0:
                 if (_currentNodeIndex == TopLevelSize - 1)
                 {
-                    OrganizeNewTopLevel();
+                    _topLevelNodes = OrganizeNewTopLevel();
                     return false;
                 }
 
@@ -86,14 +88,19 @@ public class Tournament<T>
                 currentNode.Value = currentNode.ToArray()[0];
                 if (_currentNodeIndex == TopLevelSize - 1)
                 {
-                    OrganizeNewTopLevel();
+                    _topLevelNodes = OrganizeNewTopLevel();
                     return false;
                 }
 
                 _currentNodeIndex++;
                 return false;
         }
-
+        
+        // None of these values are null, this will just shut up the compiler
+        Debug.Assert(currentNode.Left != null, "currentNode.Left != null");
+        Debug.Assert(currentNode.Left.Value != null, "currentNode.Left.Value != null");
+        Debug.Assert(currentNode.Right != null, "currentNode.Right != null");
+        Debug.Assert(currentNode.Right.Value != null, "currentNode.Right.Value != null");
         if (!currentNode.Left.Value.Equals(value) && !currentNode.Right.Value.Equals(value))
             throw new ArgumentException("Value could not be found in current match up");
 
@@ -106,7 +113,7 @@ public class Tournament<T>
             }
 
             currentNode.Value = value;
-            OrganizeNewTopLevel();
+            _topLevelNodes = OrganizeNewTopLevel();
             return false;
         }
 
@@ -145,7 +152,7 @@ public class Tournament<T>
         }
     }
 
-    private void OrganizeNewTopLevel(List<T> entries)
+    private List<Node> OrganizeNewTopLevel(List<T> entries)
     {
         if (_currentNodeIndex != 0 || entries.Count == 0) throw new ArgumentException();
 
@@ -162,12 +169,12 @@ public class Tournament<T>
         {
             for (var i = 0; i < entries.Count; i++) newTopLevel.Add(new Node(entries[i++], entries[i]));
         }
-
-        _topLevelNodes = newTopLevel;
+        
         _currentNodeIndex = 0;
+        return newTopLevel;
     }
 
-    private void OrganizeNewTopLevel()
+    private List<Node> OrganizeNewTopLevel()
     {
         if (_currentNodeIndex != _topLevelNodes.Count - 1)
             throw new InvalidOperationException(
@@ -189,16 +196,15 @@ public class Tournament<T>
             for (var i = 0; i < _topLevelNodes.Count; i++)
                 newTopLevel.Add(new Node(_topLevelNodes[i++], _topLevelNodes[i]));
         }
-
-        _topLevelNodes = newTopLevel;
         _currentNodeIndex = 0;
+        return newTopLevel;
     }
 
     internal class Node
     {
         internal readonly Node? Left;
         internal readonly Node? Right;
-        internal T Value;
+        internal T? Value;
 
         // Constructors, one bottom-level and one top-level
         internal Node(T leftValue, T rightValue)
@@ -234,11 +240,31 @@ public class Tournament<T>
 
         internal T[] ToArray()
         {
-            if (Right != null && Left != null) return new[] { Left.Value, Right.Value };
-            if (Right == null && Left == null) return new[] { Value };
+            if (Right != null && Left != null)
+            {
+                Debug.Assert(Left.Value != null, "Left.Value != null");
+                Debug.Assert(Right.Value != null, "Right.Value != null");
+                return new[] { Left.Value, Right.Value };
+            }
+
+            if (Right == null && Left == null)
+            {
+                Debug.Assert(Value != null, nameof(Value) + " != null");
+                return new[] { Value };
+            }
+
             if (Right != null)
+            {
+                Debug.Assert(Right.Value != null, "Right.Value != null");
                 return new[] { Right.Value };
-            if (Left != null) return new[] { Left.Value };
+            }
+
+            if (Left != null)
+            {
+                Debug.Assert(Left.Value != null, "Left.Value != null");
+                return new[] { Left.Value };
+            }
+
             return Array.Empty<T>();
         }
     }
