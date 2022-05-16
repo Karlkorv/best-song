@@ -7,3 +7,9 @@
 <a href="https://johnnycrazy.github.io/SpotifyAPI-NET/docs/introduction">Spotify API-NET docs</a>
 
 <a href="https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows">Secrets</a>
+Spotify color palette (hex):
+#1db954 Dark green
+#1ed760 Light green
+#ffffff Pure white
+#191414 black
+<a href="https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows">Secrets</a>
