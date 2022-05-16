@@ -1,6 +1,5 @@
 using System;
 using best_song.Data;
-using best_song.Shared;
 using Xunit;
 
 public class TournamentTests
