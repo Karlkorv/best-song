@@ -12,4 +12,3 @@ Spotify color palette (hex):
 #1ed760 Light green
 #ffffff Pure white
 #191414 black
-<a href="https://docs.microsoft.com/en-us/aspnet/core/security/app-secrets?view=aspnetcore-6.0&tabs=windows">Secrets</a>
