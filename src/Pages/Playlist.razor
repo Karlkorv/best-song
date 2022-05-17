@@ -1,10 +1,12 @@
-﻿@page "/"
+﻿@OnAfterRenderAsync(true)
+@page "/"
 @using best_song.Data
 @using SpotifyAPI.Web
 @inject ILogger<Playlist> Logger;
+@inject Blazored.LocalStorage.ILocalStorageService Storage
 @inject Tournament<FullTrack> Trn;
 @inject Spotify Spotify
-@if (!_validPlaylist)
+@if (Storage.GetItemAsync<bool>("validPlaylist").Result)
 {
     <h3>Input Playlist</h3>
     <form>
@@ -15,15 +17,21 @@ else
 {
     <h1>Valid playlist submitted</h1>
     <form>
-        <button class="songButton" id="firstButton" @bind="_firstSong" onclick="">@Trn.CurrentMatchUp[0].Name</button>
-        <button class="songButton" id="secondButton" @bind="_secondSong">@Trn.CurrentMatchUp[1].Name</button>
+        <button class="songButton" id="firstButton" @bind="_firstSong">
+            @Trn.CurrentMatchUp[0].Name
+        </button>
+        <button class="songButton" id="secondButton" @bind="_secondSong">
+            @Trn.CurrentMatchUp[1].Name
+        </button>
     </form>
+    
+    <div class songDisplay>
+        <audio controls><source src="@Trn.CurrentMatchUp[0].PreviewUrl"/>Your browser does not support the audio element</audio>
+    </div>
 }
-
 
 @code
 {
-    private bool _validPlaylist;
     private bool _firstSong;
     private bool _secondSong;
     private string _input = string.Empty;
@@ -40,7 +48,7 @@ else
                 return "bad";
             }
             Logger.Log(LogLevel.Information, "Playlist is valid");
-            _validPlaylist = true;
+            await Storage.SetItemAsync("validPlaylist", true);
             Trn.AddEntries(playList);
             Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
             StateHasChanged();
@@ -48,7 +56,6 @@ else
         }
         catch (APIException e)
         {
-            _input = string.Empty;
             Console.WriteLine(e);
             return "bad";
         }
