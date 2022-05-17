@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System;
 using System.Text;
 using HtmlAgilityPack;
+using Newtonsoft.Json;
 namespace best_song.Data;
 public class Spotify {
 
@@ -75,36 +76,35 @@ public class Spotify {
         var body = GetDocument(embedUrl.ToString())
                 .DocumentNode.SelectSingleNode("//body/script[@id='resource']")
                 .InnerHtml;
-
-        Regex rg = new Regex(@"(?<=mp3-preview%2F)(.*?)(?=%22)");
-        StringBuilder link = new StringBuilder("https://p.scdn.co/mp3-preview/");
-        var linkExt = rg.Matches(body)[0].Value;
-        for (int i = 0; i < linkExt.Length; i++)
+          
+        StringBuilder json = new StringBuilder(body.Length);
+        int i = 0;
+        while (i < body.Length)
         {
-            if (linkExt[i] == '%')
+            if (body[i] == '%')
             {
                 StringBuilder hex = new StringBuilder();
-                hex.Append(linkExt[i+1]).Append(linkExt[i+2]);
+                hex.Append(body[i+1]).Append(body[i+2]);
                 string value = Char.ConvertFromUtf32(Convert.ToInt32(hex.ToString(), 16));
-                link.Append(value);
-                i=i+2;
+                json.Append(value);
+                i = i+3;
+                continue;
             }
-            link.Append(linkExt[i]);
+            json.Append(body[i]);
+            i++;
         }
-        return link.ToString();
+        Track? track = JsonConvert.DeserializeObject<Track>(json.ToString());
+        if (track.PreviewUrl is null) 
+        {
+            return "";
+        }
+        return track.PreviewUrl;
+    
     }
     private static HtmlDocument GetDocument(string url)
     {
         HtmlWeb web = new HtmlWeb();
         HtmlDocument doc = web.Load(url);
         return doc;
-    }
-
-    public async Task<string> GetTrack(string id) 
-    {
-
-        var track = await _spotifyClient.Tracks.Get(id);
-        Console.WriteLine(track.PreviewUrl);
-        return track.PreviewUrl;
     }
 }
