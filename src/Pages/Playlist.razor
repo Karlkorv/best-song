@@ -1,9 +1,9 @@
 ﻿@page "/"
 @using best_song.Data
 @using SpotifyAPI.Web
-@inject ILogger<Playlist> _logger;
-@inject Tournament<FullTrack> trn;
-@inject Spotify spotify
+@inject ILogger<Playlist> Logger;
+@inject Tournament<FullTrack> Trn;
+@inject Spotify Spotify
 @if (!_validPlaylist)
 {
     <h3>Input Playlist</h3>
@@ -15,8 +15,8 @@ else
 {
     <h1>Valid playlist submitted</h1>
     <form>
-        <button class="songButton" id="firstButton" @bind="_firstSong" onclick="">@trn.CurrentMatchUp[0].Name</button>
-        <button class="songButton" id="secondButton" @bind="_secondSong">@trn.CurrentMatchUp[1].Name</button>
+        <button class="songButton" id="firstButton" @bind="_firstSong" onclick="">@Trn.CurrentMatchUp[0].Name</button>
+        <button class="songButton" id="secondButton" @bind="_secondSong">@Trn.CurrentMatchUp[1].Name</button>
     </form>
 }
 
@@ -32,17 +32,17 @@ else
     {
         try
         {
-            _logger.Log(LogLevel.Information, "Playlist submitted");
-            var playList = await spotify.GetPlayList(_input);
+            Logger.Log(LogLevel.Information, "Playlist submitted");
+            var playList = await Spotify.GetPlayList(_input);
             if (playList.Count == 0)
             {
                 _input = string.Empty;
                 return "bad";
             }
-            _logger.Log(LogLevel.Information, "Playlist is valid");
+            Logger.Log(LogLevel.Information, "Playlist is valid");
             _validPlaylist = true;
-            trn.AddEntries(playList);
-            _logger.Log(LogLevel.Information, "Playlist submitted to tournament");
+            Trn.AddEntries(playList);
+            Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
             StateHasChanged();
             return "good";
         }
