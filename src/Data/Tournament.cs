@@ -27,6 +27,11 @@ public class Tournament<T>
         _topLevelNodes = OrganizeNewTopLevel(entries);
     }
 
+    public Tournament()
+    {
+        _topLevelNodes = new(50);
+    }
+
     /// <summary>
     ///     Initializes a new tournament
     /// </summary>
@@ -61,6 +66,22 @@ public class Tournament<T>
 
             return currentNode.ToArray();
         }
+    }
+
+    /// <summary>
+    /// Adds the given list as entries into the tournament if the tournament is empty
+    /// </summary>
+    /// <param name="entries"></param>
+    /// <returns>True if successful, false otherwise</returns>
+    public bool AddEntries(List<T> entries)
+    {
+        if (_topLevelNodes.Count != 0)
+        {
+            return false;
+        }
+
+        _topLevelNodes = OrganizeNewTopLevel(entries);
+        return true;
     }
 
     /// <summary>
@@ -154,7 +175,7 @@ public class Tournament<T>
 
     private List<Node> OrganizeNewTopLevel(List<T> entries)
     {
-        if (_currentNodeIndex != 0 || entries.Count == 0) throw new ArgumentException();
+        if (_currentNodeIndex != 0 || entries.Count == 0) throw new ArgumentException("List is empty");
 
         Shuffle(entries.ToList());
         List<Node> newTopLevel = new();
