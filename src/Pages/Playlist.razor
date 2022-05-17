@@ -1,45 +1,56 @@
 ﻿@page "/"
 @using best_song.Data
-@using System.ComponentModel.DataAnnotations
 @using SpotifyAPI.Web
-@inject IConfiguration _config
+@inject ILogger<Playlist> _logger;
 @inject Tournament<FullTrack> trn;
 @inject Spotify spotify
-<h3>Input Playlist</h3>
-<EditForm Model="@_inputModel" OnValidSubmit="@HandleValidSubmit">
-    <p>
-        <label>
-            Share playlist url:
-            <InputText @bind-Value="_inputModel.Input"/>
-        </label>
-    </p>
-    <button type="submit">Submit</button>
-</EditForm>
+@if (!_validPlaylist)
+{
+    <h3>Input Playlist</h3>
+    <form>
+        <input id="playlistSubmit" type="url" @bind="_input"  placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
+    </form>
+}
+else
+{
+    <h1>Valid playlist submitted</h1>
+    <form>
+        <button class="songButton" id="firstButton" @bind="_firstSong" onclick="">@trn.CurrentMatchUp[0].Name</button>
+        <button class="songButton" id="secondButton" @bind="_secondSong">@trn.CurrentMatchUp[1].Name</button>
+    </form>
+}
 
-@code {
 
-    public class InputModel
-    {
-        [Required]
-        [Url]
-        public string Input { get; set; } = "";
-    }
+@code
+{
+    private bool _validPlaylist;
+    private bool _firstSong;
+    private bool _secondSong;
+    private string _input = string.Empty;
 
-    private readonly InputModel _inputModel = new();
-
-    private async void HandleValidSubmit()
+    private async Task<string> HandleSubmit()
     {
         try
         {
-            var entryList = await spotify.GetPlayList(_inputModel.Input);
-            trn = new Tournament<FullTrack>(entryList);
+            _logger.Log(LogLevel.Information, "Playlist submitted");
+            var playList = await spotify.GetPlayList(_input);
+            if (playList.Count == 0)
+            {
+                _input = string.Empty;
+                return "bad";
+            }
+            _logger.Log(LogLevel.Information, "Playlist is valid");
+            _validPlaylist = true;
+            trn.AddEntries(playList);
+            _logger.Log(LogLevel.Information, "Playlist submitted to tournament");
+            StateHasChanged();
+            return "good";
         }
-        catch (Exception e)
+        catch (APIException e)
         {
+            _input = string.Empty;
             Console.WriteLine(e);
-            return; // TODO: Handle submit errors
+            return "bad";
         }
-        // TODO: Dynamically change site to tournament.
     }
-
 }
