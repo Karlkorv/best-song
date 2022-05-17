@@ -43,7 +43,7 @@ public class Spotify {
     /// <summary>
     /// Takes a playlist id and returns a list of all FullTracks
     /// </summary>
-    /// <param name="playlistid"></param>
+    /// <param name="playlistid">The id of the playlist</param>
     /// <exception cref="ApiException"></throws>
     /// <returns>A list of FullTrack</returns>
     public async Task<List<FullTrack>> GetPlayListTracksFromId(string playlistid) 
@@ -64,11 +64,11 @@ public class Spotify {
         return tracks;
     }
     /// <summary>
-    /// Ful kod? Ja
-    /// Funkar? Ja
+    /// Gets preview url from the id of the song
+    /// by scraping the embeded url
     /// </summary>
-    /// <param name="id"></param>
-    /// <returns></returns>
+    /// <param name="id">The id of the track</param>
+    /// <returns>the PreviewUrl</returns>
     private string GetPreviewFromId(string id) 
     {
         StringBuilder embedUrl = new StringBuilder("https://open.spotify.com/embed?uri=spotify:track:");
