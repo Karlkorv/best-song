@@ -1,7 +1,7 @@
 # Spotify Song Tournament
 
 ## How to use:
-Simply clone the repository and enter `dotnet run` in the src project to host the website locally, the application will also need an API secret and a app from https://developer.spotify.com/dashboard/login
+Simply clone the repository and enter `dotnet run` in the src project to host the website locally, the application will also need an API secret and a registered app from https://developer.spotify.com/dashboard/login
 
 
 
