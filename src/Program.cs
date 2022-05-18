@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using best_song.Data;
 using best_song.Shared;
+using Blazored.LocalStorage;
 using SpotifyAPI.Web;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
+builder.Services.AddBlazoredLocalStorage();
 builder.Services.AddSingleton<Spotify>();
 builder.Services.AddScoped<Tournament<FullTrack>>();
 var app = builder.Build();

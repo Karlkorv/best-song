@@ -1,0 +1,64 @@
+@page "/tournament"
+@using best_song.Data
+@using SpotifyAPI.Web
+@inject Spotify Spotify
+@inject ILogger<Tournament> Logger
+@inject NavigationManager NavigationManager
+@inject Tournament<FullTrack> Trn
+<h3>Tournament</h3>
+<div class="card">
+    <div class="card-header">
+        <button @onclick="WinHigher">@Trn.CurrentMatchUp[0].Name</button>
+    </div>
+    <div class="card-body">
+        <img src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover"/>
+        <audio controls>
+            <source src="@Trn.CurrentMatchUp[0].PreviewUrl">
+        </audio>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <button @onclick="WinLower">@Trn.CurrentMatchUp[1].Name</button>
+    </div>
+    <div class="card-body">
+        <img src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover"/>
+        <audio controls>
+            <source src="@Trn.CurrentMatchUp[1].PreviewUrl">
+        </audio>
+    </div>
+</div>
+
+@code
+{
+
+    private void WinHigher()
+    {
+        if (Trn.Win(Trn.CurrentMatchUp[0]))
+        {
+            HandleWinner();
+        }
+        else
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void WinLower()
+    {
+        if (Trn.Win(Trn.CurrentMatchUp[1]))
+        {
+            HandleWinner();
+        }
+        else
+        {
+            StateHasChanged();
+        }
+    }
+
+    private void HandleWinner()
+    {
+        NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri("winner").ToString());
+    }
+}

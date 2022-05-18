@@ -1,45 +1,44 @@
 ﻿@page "/"
-@using best_song.Data
-@using System.ComponentModel.DataAnnotations
+@using Blazored.LocalStorage
 @using SpotifyAPI.Web
-@inject IConfiguration _config
-@inject Tournament<FullTrack> trn;
-@inject Spotify spotify
+@using best_song.Data
+@inject NavigationManager NavigationManager
+@inject ILogger<Playlist> Logger;
+@inject ILocalStorageService Storage
+@inject Tournament<FullTrack> Trn;
+@inject Spotify Spotify
+
+<body>
 <h3>Input Playlist</h3>
-<EditForm Model="@_inputModel" OnValidSubmit="@HandleValidSubmit">
-    <p>
-        <label>
-            Share playlist url:
-            <InputText @bind-Value="_inputModel.Input"/>
-        </label>
-    </p>
-    <button type="submit">Submit</button>
-</EditForm>
+<form>
+    <input id="playlistSubmit" type="url" @bind-value="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
+</form>
+</body>
 
-@code {
+@code
+{
+    private string _input = string.Empty;
 
-    public class InputModel
-    {
-        [Required]
-        [Url]
-        public string Input { get; set; } = "";
-    }
-
-    private readonly InputModel _inputModel = new();
-
-    private async void HandleValidSubmit()
+    private async Task HandleSubmit()
     {
         try
         {
-            var entryList = await spotify.GetPlayList(_inputModel.Input);
-            trn = new Tournament<FullTrack>(entryList);
+            Logger.Log(LogLevel.Information, "Playlist submitted");
+            var playList = await Spotify.GetPlayList(_input);
+            if (playList.Count == 0)
+            {
+                _input = string.Empty;
+                return;
+            }
+            Logger.Log(LogLevel.Information, "Playlist is valid");
+            await Storage.SetItemAsync("validPlaylist", true);
+            Trn.AddEntries(playList);
+            Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
+            NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri("tournament").ToString());
         }
-        catch (Exception e)
+        catch (APIException e)
         {
-            Console.WriteLine(e);
-            return; // TODO: Handle submit errors
+            Console.WriteLine(e); // Behöver error handling här hjälp
         }
-        // TODO: Dynamically change site to tournament.
     }
-
 }
