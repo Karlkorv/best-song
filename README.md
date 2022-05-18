@@ -4,6 +4,8 @@
 Simply clone the repository and enter `dotnet run` in the src project to host the website locally.
 
 
+
+## Resources
 Spotify color palette (hex):
 #1db954 Dark green
 #1ed760 Light green
