@@ -7,10 +7,11 @@
 @inject ILocalStorageService Storage
 @inject Tournament<FullTrack> Trn;
 @inject Spotify Spotify
+
 <body>
 <h3>Input Playlist</h3>
 <form>
-    <input id="playlistSubmit" type="url" @bind-value="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit"/>
+    <input id="playlistSubmit" type="url" @bind-value="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
 </form>
 </body>
 
@@ -18,7 +19,7 @@
 {
     private string _input = string.Empty;
 
-    private async void HandleSubmit()
+    private async Task HandleSubmit()
     {
         try
         {

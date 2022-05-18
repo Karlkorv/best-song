@@ -1,0 +1,10 @@
+@page "/winner"
+@using SpotifyAPI.Web
+@using best_song.Data
+@inject Tournament<FullTrack> Trn;
+<h3>Winner</h3>
+<div class="song">
+    <h1>Vinnaren är...</h1>
+    <img src="@Trn.Winner?.Album.Images[0].Url" alt="Album cover"/>
+    <h1>@Trn.Winner?.Name</h1>
+</div>

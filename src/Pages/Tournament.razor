@@ -3,46 +3,35 @@
 @using SpotifyAPI.Web
 @inject Spotify Spotify
 @inject ILogger<Tournament> Logger
+@inject NavigationManager NavigationManager
 @inject Tournament<FullTrack> Trn
 <h3>Tournament</h3>
-@if (!_trnFinished)
-{
-    <div class="card">
-        <div class="card-header">
-            <button @onclick="WinHigher">@Trn.CurrentMatchUp[0].Name</button>
-        </div>
-        <div class="card-body">
-            <img src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover"/>
-            <audio controls>
-                <source src="@Trn.CurrentMatchUp[0].PreviewUrl">
-            </audio>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <button @onclick="WinHigher">@Trn.CurrentMatchUp[0].Name</button>
     </div>
+    <div class="card-body">
+        <img src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover"/>
+        <audio controls>
+            <source src="@Trn.CurrentMatchUp[0].PreviewUrl">
+        </audio>
+    </div>
+</div>
 
-    <div class="card">
-        <div class="card-header">
-            <button @onclick="WinLower">@Trn.CurrentMatchUp[1].Name</button>
-        </div>
-        <div class="card-body">
-            <img src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover"/>
-            <audio controls>
-                <source src="@Trn.CurrentMatchUp[1].PreviewUrl">
-            </audio>
-        </div>
+<div class="card">
+    <div class="card-header">
+        <button @onclick="WinLower">@Trn.CurrentMatchUp[1].Name</button>
     </div>
-}
-else
-{
-    <div class="song">
-        <h1>Vinnaren är...</h1>
-        <img src="@Trn.Winner?.Album.Images[0].Url" alt="Album cover"/>
-        <h1>@Trn.Winner?.Name</h1>
+    <div class="card-body">
+        <img src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover"/>
+        <audio controls>
+            <source src="@Trn.CurrentMatchUp[1].PreviewUrl">
+        </audio>
     </div>
-}
+</div>
 
 @code
 {
-    private readonly bool _trnFinished = false;
 
     private void WinHigher()
     {
@@ -70,5 +59,6 @@ else
 
     private void HandleWinner()
     {
+        NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri("winner").ToString());
     }
 }
