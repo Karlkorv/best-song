@@ -34,7 +34,7 @@ public class Track
     public ExternalUrls ExternalUrls { get; set; } = default!;
 
     [JsonProperty("href")]
-    public Uri Href { get; set; } = default!;
+    public string Href { get; set; } = default!;
 
     [JsonProperty("id")]
     public string Id { get; set; } = default!;
@@ -76,10 +76,10 @@ public partial class Album
     public Artist[] Artists { get; set; } = default!;
 
     [JsonProperty("external_urls")]
-    public ExternalUrls ExternalUrls { get; set; } = default!;
+    public string ExternalUrls { get; set; } = default!;
 
     [JsonProperty("href")]
-    public Uri Href { get; set; } = default!;
+    public string Href { get; set; } = default!;
 
     [JsonProperty("id")]
     public string Id { get; set; } = default!;
@@ -91,7 +91,7 @@ public partial class Album
     public string Name { get; set; } = default!;
 
     [JsonProperty("release_date")]
-    public DateTimeOffset ReleaseDate { get; set; } = default!;
+    public string ReleaseDate { get; set; } = default!;
 
     [JsonProperty("release_date_precision")]
     public string ReleaseDatePrecision { get; set; } = default!;
@@ -130,7 +130,7 @@ public partial class Artist
 public partial class ExternalUrls
 {
     [JsonProperty("spotify")]
-    public Uri Spotify { get; set; } = default!;
+    public string Spotify { get; set; } = default!;
 }
 
 public partial class Image
@@ -139,7 +139,7 @@ public partial class Image
     public long Height { get; set; } = default!;
 
     [JsonProperty("url")]
-    public Uri Url { get; set; } = default!;
+    public string Url { get; set; } = default!;
 
     [JsonProperty("width")]
     public long Width { get; set; } = default!;
