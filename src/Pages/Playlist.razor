@@ -39,6 +39,10 @@
                 return;
             }
             var playList = await Spotify.GetPlayList(_plf.InputUrl);
+            if (playList.Count == 0)
+            {
+                Logger.Log(LogLevel.Error, "Playlist link invalid, list is empty");
+            }
             Logger.Log(LogLevel.Information, "Playlist is valid");
             Trn.AddEntries(playList);
             Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
