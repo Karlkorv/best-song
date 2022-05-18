@@ -10,7 +10,7 @@
 <body>
 <h3>Input Playlist</h3>
 <form>
-    <input id="playlistSubmit" type="url" @bind="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
+    <input id="playlistSubmit" type="url" @bind-value="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit"/>
 </form>
 </body>
 
@@ -18,7 +18,7 @@
 {
     private string _input = string.Empty;
 
-    private async Task<string> HandleSubmit()
+    private async void HandleSubmit()
     {
         try
         {
@@ -27,19 +27,17 @@
             if (playList.Count == 0)
             {
                 _input = string.Empty;
-                return "bad";
+                return;
             }
             Logger.Log(LogLevel.Information, "Playlist is valid");
             await Storage.SetItemAsync("validPlaylist", true);
             Trn.AddEntries(playList);
             Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
             NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri("tournament").ToString());
-            return "good";
         }
         catch (APIException e)
         {
             Console.WriteLine(e); // Behöver error handling här hjälp
-            return "bad";
         }
     }
 }
