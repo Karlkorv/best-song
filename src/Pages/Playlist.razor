@@ -1,39 +1,21 @@
-﻿@OnAfterRenderAsync(true)
-@page "/"
-@using best_song.Data
+﻿@page "/"
+@using Blazored.LocalStorage
 @using SpotifyAPI.Web
+@using best_song.Data
+@inject NavigationManager NavigationManager
 @inject ILogger<Playlist> Logger;
-@inject Blazored.LocalStorage.ILocalStorageService Storage
+@inject ILocalStorageService Storage
 @inject Tournament<FullTrack> Trn;
 @inject Spotify Spotify
-@if (Storage.GetItemAsync<bool>("validPlaylist").Result)
-{
-    <h3>Input Playlist</h3>
-    <form>
-        <input id="playlistSubmit" type="url" @bind="_input"  placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
-    </form>
-}
-else
-{
-    <h1>Valid playlist submitted</h1>
-    <form>
-        <button class="songButton" id="firstButton" @bind="_firstSong">
-            @Trn.CurrentMatchUp[0].Name
-        </button>
-        <button class="songButton" id="secondButton" @bind="_secondSong">
-            @Trn.CurrentMatchUp[1].Name
-        </button>
-    </form>
-    
-    <div class songDisplay>
-        <audio controls><source src="@Trn.CurrentMatchUp[0].PreviewUrl"/>Your browser does not support the audio element</audio>
-    </div>
-}
+<body>
+<h3>Input Playlist</h3>
+<form>
+    <input id="playlistSubmit" type="url" @bind="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
+</form>
+</body>
 
 @code
 {
-    private bool _firstSong;
-    private bool _secondSong;
     private string _input = string.Empty;
 
     private async Task<string> HandleSubmit()
@@ -51,12 +33,12 @@ else
             await Storage.SetItemAsync("validPlaylist", true);
             Trn.AddEntries(playList);
             Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
-            StateHasChanged();
+            NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri("tournament").ToString());
             return "good";
         }
         catch (APIException e)
         {
-            Console.WriteLine(e);
+            Console.WriteLine(e); // Behöver error handling här hjälp
             return "bad";
         }
     }
