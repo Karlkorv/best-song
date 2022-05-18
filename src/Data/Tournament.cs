@@ -73,12 +73,10 @@ public class Tournament<T>
     /// </summary>
     /// <param name="entries"></param>
     /// <returns>True if successful, false otherwise</returns>
-    public bool AddEntries(List<T> entries)
+    public void AddEntries(List<T> entries)
     {
-        if (_topLevelNodes.Count != 0) return false;
-
+        if (entries.Count == 0) throw new ArgumentException("Entry list empty");
         _topLevelNodes = OrganizeNewTopLevel(entries);
-        return true;
     }
 
     /// <summary>
