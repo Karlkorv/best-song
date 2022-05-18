@@ -2,6 +2,7 @@
 @using Blazored.LocalStorage
 @using SpotifyAPI.Web
 @using best_song.Data
+@using System.ComponentModel.DataAnnotations
 @inject NavigationManager NavigationManager
 @inject ILogger<Playlist> Logger;
 @inject ILocalStorageService Storage
@@ -10,28 +11,39 @@
 
 <body>
 <h3>Input Playlist</h3>
-<form>
-    <input id="playlistSubmit" type="url" @bind-value="_input" placeholder="Enter playlist url" onsubmit="@HandleSubmit()"/>
-</form>
+<EditForm Model="@_plf" OnSubmit="@HandleSubmit">
+    <DataAnnotationsValidator/>
+    <ValidationSummary/>
+
+    <InputText id="playlist" @bind-Value="_plf.InputUrl"></InputText>
+</EditForm>
 </body>
 
 @code
 {
-    private string _input = string.Empty;
+    private class PlaylistForm
+    {
+        [Required] internal string? InputUrl;
+    }
 
-    private async Task HandleSubmit()
+    private readonly PlaylistForm _plf = new();
+
+    private async void HandleSubmit()
     {
         try
         {
             Logger.Log(LogLevel.Information, "Playlist submitted");
-            var playList = await Spotify.GetPlayList(_input);
-            if (playList.Count == 0)
+            if (_plf.InputUrl == null)
             {
-                _input = string.Empty;
+                Logger.Log(LogLevel.Information, "Input is null");
                 return;
             }
+            var playList = await Spotify.GetPlayList(_plf.InputUrl);
+            if (playList.Count == 0)
+            {
+                Logger.Log(LogLevel.Error, "Playlist link invalid, list is empty");
+            }
             Logger.Log(LogLevel.Information, "Playlist is valid");
-            await Storage.SetItemAsync("validPlaylist", true);
             Trn.AddEntries(playList);
             Logger.Log(LogLevel.Information, "Playlist submitted to tournament");
             NavigationManager.NavigateTo(NavigationManager.ToAbsoluteUri("tournament").ToString());
