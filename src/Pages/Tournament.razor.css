@@ -1,9 +1,11 @@
 #album-cover {
     border-radius: 50%;
+    width: 100%;
 }
 #album-cover:hover {
     animation: rotation 8s infinite linear;
-} 
+}
+
 @keyframes rotation {
     from {
         transform: rotate(0deg);
@@ -11,4 +13,13 @@
     to {
         transform: rotate(359deg);
     }
+}
+.container-fluid {
+    min-height: 100vh;
+}
+.row {
+    min-height: 100vh;
+}
+.card {
+    min-height: 100vh;
 }
