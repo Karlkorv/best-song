@@ -221,8 +221,23 @@ public class Tournament<T>
 
     private int GetMatchUpsLeft(int curTopSize)
     {
-        if (curTopSize <= 1) return 0;
-        if (curTopSize == TopLevelSize) return curTopSize - _currentNodeIndex - 1 + GetMatchUpsLeft(curTopSize / 2);
+        // Detta är ful kod och jag bör skämmas
+        //"base case"
+        switch (curTopSize)
+        {
+            case 1:
+                return 1;
+            case 3:
+                return 4;
+            case 5:
+                return 4;
+            case 7:
+                return 6;
+            case 9:
+                return 8;
+        }
+
+        if (curTopSize == TopLevelSize) return curTopSize - _currentNodeIndex + GetMatchUpsLeft(curTopSize / 2);
         return curTopSize + GetMatchUpsLeft(curTopSize / 2);
     }
 
