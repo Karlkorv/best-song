@@ -205,7 +205,11 @@ public class Tournament<T>
             for (var i = 0; i < _topLevelNodes.Count - 1; i++)
                 newTopLevel.Add(new Node(_topLevelNodes[i++], _topLevelNodes[i]));
 
-            newTopLevel.Add(new Node(_topLevelNodes[^1], null));
+            Node oddNode = new(_topLevelNodes[^1], null)
+            {
+                Value = _topLevelNodes[^1].Value // Last odd node gets an autowin.
+            };
+            newTopLevel.Add(oddNode);
         }
         else
         {
