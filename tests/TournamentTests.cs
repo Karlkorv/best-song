@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using best_song.Data;
 using Xunit;
 
@@ -33,5 +34,17 @@ public class TournamentTests
         for (var i = 0; i < 4; i++) actual = unevenTrn.Win(unevenTrn.CurrentMatchUp[0]);
         // Assert
         Assert.True(actual);
+    }
+
+    [Fact]
+    public void TournamentWorksForLargerEntries()
+    {
+        var bigList = new List<int>();
+        for (var i = 0; i < 2000; i++) bigList.Add(i);
+
+        Tournament<int> bigTrn = new(bigList);
+        var wonLast = false;
+        while (!wonLast) wonLast = bigTrn.Win(bigTrn.CurrentMatchUp[1]);
+        Assert.True(wonLast);
     }
 }
