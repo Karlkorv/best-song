@@ -12,7 +12,7 @@
         <p>@Trn.CurrentMatchUp[0].Name - @Trn.CurrentMatchUp[0].Artists[0].Name</p>
     </div>
     <div class="card-body">
-        <img src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover" @onmouseover="SwitchTop" @onclick="WinHigher" @onmouseout="SwitchTop"/>
+        <img id="album-cover" src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover" @onmouseover="SwitchTop" @onclick="WinHigher" @onmouseout="SwitchTop"/>
         @if (_playTop)
         {
             <audio src="@Trn.CurrentMatchUp[0].PreviewUrl" autoplay></audio>
@@ -29,7 +29,7 @@
         <p>@Trn.CurrentMatchUp[1].Name - @Trn.CurrentMatchUp[1].Artists[0].Name</p>
     </div>
     <div class="card-body">
-        <img src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover" @onmouseover="SwitchBottom" @onclick="WinLower" @onmouseout="SwitchBottom"/>
+        <img id="album-cover" src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover" @onmouseover="SwitchBottom" @onclick="WinLower" @onmouseout="SwitchBottom"/>
         @if (_playBottom)
         {
             <audio src="@Trn.CurrentMatchUp[1].PreviewUrl" autoplay></audio>
