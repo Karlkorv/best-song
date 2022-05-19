@@ -5,7 +5,7 @@
 @inject ILogger<Tournament> Logger
 @inject NavigationManager NavigationManager
 @inject Tournament<FullTrack> Trn
-<h3>Tournament</h3>
+<h3>Rounds left: @Trn.MatchUpsLeft</h3>
 <div class="card">
     <div class="card-header">
         <button @onclick="WinHigher">@Trn.CurrentMatchUp[0].Name</button>
