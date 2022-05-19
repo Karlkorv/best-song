@@ -221,23 +221,19 @@ public class Tournament<T>
 
     private int GetMatchUpsLeft(int curTopSize)
     {
-        // Detta är ful kod och jag bör skämmas
-        //"base case"
-        switch (curTopSize)
+        // Denna är klurig, antalet matchups på grundnivån beror av antalet barn (entries)
+
+        // Base case: Final matchup remains
+        if (curTopSize == 1) return 1;
+
+        // Count children
+        if (curTopSize == TopLevelSize)
         {
-            case 1:
-                return 1;
-            case 3:
-                return 4;
-            case 5:
-                return 4;
-            case 7:
-                return 6;
-            case 9:
-                return 8;
+            if (curTopSize % 2 != 0) return 1 + GetMatchUpsLeft(curTopSize - 1);
+
+            return TopLevelSize - _currentNodeIndex + GetMatchUpsLeft(curTopSize / 2);
         }
 
-        if (curTopSize == TopLevelSize) return curTopSize - _currentNodeIndex + GetMatchUpsLeft(curTopSize / 2);
         return curTopSize + GetMatchUpsLeft(curTopSize / 2);
     }
 
