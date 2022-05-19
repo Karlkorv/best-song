@@ -45,6 +45,8 @@ public class Tournament<T>
 
     public T? Winner { get; private set; }
 
+    public int MatchUpsLeft => GetMatchUpsLeft(TopLevelSize);
+
     /// <summary>
     ///     Current tournament match up that needs to be resolved, one of the two values has to win.
     /// </summary>
@@ -215,6 +217,13 @@ public class Tournament<T>
 
         _currentNodeIndex = 0;
         return newTopLevel;
+    }
+
+    private int GetMatchUpsLeft(int curTopSize)
+    {
+        if (curTopSize <= 1) return 0;
+        if (curTopSize == TopLevelSize) return curTopSize - _currentNodeIndex - 1 + GetMatchUpsLeft(curTopSize / 2);
+        return curTopSize + GetMatchUpsLeft(curTopSize / 2);
     }
 
     internal class Node
