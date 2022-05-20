@@ -37,6 +37,49 @@ public class TournamentTests
     }
 
     [Fact]
+    public void MatchUpsLeftIsCorrect()
+    {
+        var expected = 3;
+        var trnFinished = false;
+
+        while (!trnFinished)
+        {
+            Assert.Equal(expected, evenTrn.MatchUpsLeft);
+            expected--;
+            trnFinished = evenTrn.Win(evenTrn.CurrentMatchUp[0]);
+        }
+    }
+
+    [Fact]
+    public void MatchUpsLeftIsCorrectForLargerTrn()
+    {
+        List<int> largerList = new();
+        for (var i = 0; i < 16; i++) largerList.Add(i);
+
+        Tournament<int> largerTrn = new(largerList);
+
+        var expected = 8 + 4 + 2 + 1;
+        var trnFinished = false;
+
+        while (!trnFinished)
+        {
+            Assert.Equal(expected, largerTrn.MatchUpsLeft);
+            expected--;
+            trnFinished = largerTrn.Win(largerTrn.CurrentMatchUp[0]);
+        }
+    }
+
+    [Fact]
+    public void MatchUpsLeftWorksForUnevenTrn()
+    {
+        var expected = 4;
+        var trnFinished = false;
+        while (!trnFinished)
+        {
+            Assert.Equal(expected, unevenTrn.MatchUpsLeft);
+            trnFinished = unevenTrn.Win(unevenTrn.CurrentMatchUp[0]);
+            expected--;
+        }
     public void TournamentWorksForLargerEntries()
     {
         var bigList = new List<int>();
