@@ -5,29 +5,65 @@
 @inject ILogger<Tournament> Logger
 @inject NavigationManager NavigationManager
 @inject Tournament<FullTrack> Trn
+  
 <h3>Rounds left: @Trn.MatchUpsLeft</h3>
-<div class="card">
-    <div class="card-header">
-        <button @onclick="WinHigher">@Trn.CurrentMatchUp[0].Name</button>
-    </div>
-    <div class="card-body">
-        <img src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover"/>
-        <audio src="@Trn.CurrentMatchUp[0].PreviewUrl" controls></audio>
-    </div>
-</div>
-
-<div class="card">
-    <div class="card-header">
-        <button @onclick="WinLower">@Trn.CurrentMatchUp[1].Name</button>
-    </div>
-    <div class="card-body">
-        <img src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover"/>
-        <audio src="@Trn.CurrentMatchUp[1].PreviewUrl" controls></audio>
+<div class="container-fluid">
+    <div class="row ">
+        <div class="col">
+            <div class="card text-center" >
+                <div class="card-header">
+                    <p >@Trn.CurrentMatchUp[0].Name - @Trn.CurrentMatchUp[0].Artists[0].Name</p>
+                </div>
+                <div class="card-body h-100 d-flex justify-content-center align-items-center">
+                    <img id="album-cover" class="border " src="@Trn.CurrentMatchUp[0].Album.Images[1].Url" alt="Album cover" @onmouseover="SwitchTop" @onclick="WinHigher" @onmouseout="SwitchTop"/>
+                    @if (_playTop)
+                    {
+                        <audio src="@Trn.CurrentMatchUp[0].PreviewUrl" autoplay></audio>
+                    }
+                    else
+                    {
+                        <audio src="@Trn.CurrentMatchUp[0].PreviewUrl" muted></audio>
+                    }
+                </div>
+            </div>
+        </div>
+        <div class="col">
+            <div class="card text-center">
+                <div class="card-header">
+                    <p>@Trn.CurrentMatchUp[1].Name - @Trn.CurrentMatchUp[1].Artists[0].Name</p>
+                </div>
+                <div class="card-body h-100 d-flex justify-content-center align-items-center">
+                    <img id="album-cover" class="border" src="@Trn.CurrentMatchUp[1].Album.Images[1].Url" alt="Album cover" @onmouseover="SwitchBottom" @onclick="WinLower" @onmouseout="SwitchBottom"/>
+                    @if (_playBottom)
+                    {
+                        <audio src="@Trn.CurrentMatchUp[1].PreviewUrl" autoplay></audio>
+                    }
+                    else
+                    {
+                        <audio src="@Trn.CurrentMatchUp[1].PreviewUrl" muted></audio>
+                    }
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
 @code
 {
+    private bool _playTop;
+    private bool _playBottom;
+
+    private void SwitchTop()
+    {
+        _playBottom = false;
+        _playTop = !_playTop;
+    }
+
+    private void SwitchBottom()
+    {
+        _playTop = false;
+        _playBottom = !_playBottom;
+    }
 
     private void WinHigher()
     {

@@ -80,5 +80,14 @@ public class TournamentTests
             trnFinished = unevenTrn.Win(unevenTrn.CurrentMatchUp[0]);
             expected--;
         }
+    public void TournamentWorksForLargerEntries()
+    {
+        var bigList = new List<int>();
+        for (var i = 0; i < 2000; i++) bigList.Add(i);
+
+        Tournament<int> bigTrn = new(bigList);
+        var wonLast = false;
+        while (!wonLast) wonLast = bigTrn.Win(bigTrn.CurrentMatchUp[1]);
+        Assert.True(wonLast);
     }
 }
